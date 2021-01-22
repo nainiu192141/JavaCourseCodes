@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 // 单线程的socket程序
+// 同步阻塞IO BIO
 public class HttpServer01 {
     public static void main(String[] args) throws IOException{
         ServerSocket serverSocket = new ServerSocket(8801);
@@ -18,14 +19,16 @@ public class HttpServer01 {
             }
         }
     }
-    
+
     private static void service(Socket socket) {
         try {
 //            Thread.sleep(5);
+            System.out.println("接收连接"+socket.getRemoteSocketAddress());
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             printWriter.println("HTTP/1.1 200 OK");
             printWriter.println("Content-Type:text/html;charset=utf-8");
-            String body = "hello,nio";
+            String body = "hello,nio1";
+            /*报文体长度未知的话，客户端可能会异常结束*/
             printWriter.println("Content-Length:" + body.getBytes().length);
             printWriter.println();
             printWriter.write(body);
